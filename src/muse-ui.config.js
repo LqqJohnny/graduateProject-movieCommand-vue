@@ -2,7 +2,6 @@
 
 // 加载基础样式
 import 'muse-components/styles/base.less'
-import 'muse-ui/dist/theme-light.css'
 import appBar from 'muse-components/appBar'
 import avatar from 'muse-components/avatar'
 import badge from 'muse-components/badge'
@@ -17,6 +16,8 @@ import textField from 'muse-components/textField'
 import * as tabs from 'muse-components/tabs'
 import divider from 'muse-components/divider'
 import subHeader from 'muse-components/subHeader'
+import * as gridList from 'muse-components/gridList'
+
 // 这个模块在项目官网上并没有看到，但是看到作者在issues上回答时说是高分辨率屏的处理，于是就试着加进去了
 import {retina} from 'muse-components/utils'
 
@@ -34,7 +35,8 @@ const components = {
   textField,
   ...tabs,
   divider,
-  subHeader
+  subHeader,
+  ...gridList
 }
 
 export default {

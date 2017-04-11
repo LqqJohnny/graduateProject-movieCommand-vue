@@ -1,29 +1,47 @@
 <template>
-<div class="">
-    <el-button>默认按钮</el-button>
-    <el-button type="primary">主要按钮</el-button>
-    <el-button type="text">文字按钮</el-button>
-</div>
+    <div class="">
+        <MUheader></MUheader>
+        <div class="container">
+            <Lunbo></Lunbo>
+
+
+
+        </div>
+
+        <MUfooter></MUfooter>
+    </div>
 </template>
 
 <script>
+import MUheader from './common/header.vue'
+import MUfooter from './common/footer.vue'
+import Lunbo from './common/lunbo.vue'
 export default {
-  data () {
-    return {
-      bottomNav: 'movies',
-      bottomNavColor: 'movies'
+    name:"hello",
+    data:function(){
+        return{
+
+        }
+    },
+    components:{
+        MUheader,MUfooter,Lunbo
     }
-  },
-  methods: {
-    handleChange (val) {
-      this.bottomNav = val
-    }
-  }
+
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.container{
+    width:100%;
+    position: fixed;
+    bottom:56px;
+    top:56px;
+    overflow:auto;
+}
+
+
+
 h1, h2 {
   font-weight: normal;
 }

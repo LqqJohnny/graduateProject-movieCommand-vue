@@ -1,7 +1,7 @@
 <template lang="html">
-
-
-
+    <mu-appbar title="Title">
+        电影屋
+    </mu-appbar>
 </template>
 
 <script>
@@ -11,7 +11,11 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="css">
+.mu-appbar{
+    position: fixed;
+    top:0;
 
+}
 
 </style>
