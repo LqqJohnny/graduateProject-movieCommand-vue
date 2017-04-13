@@ -2,11 +2,12 @@
     <div class="lunbo">
         <div class="gridlist-demo-container">
             <mu-grid-list class="gridlist-inline-demo">
-              <mu-grid-tile v-for="tile, index in list" :key="index" v-show='index==showIndex' style="width:100%;" class="list">
-                <img :src="tile.image"/>
-                <span slot="title">{{tile.title}}</span>
-                <span slot="subTitle">by <b>{{tile.author}}</b></span>
-                <mu-icon-button icon="star_border" slot="action"/>
+              <mu-grid-tile v-for="koubei, index in propsList" :key="index"
+                            v-show='index==showIndex' style="width:100%;padding:0;" class="anim_fade_image list">
+                <!-- <img :src="koubei.image"/> -->
+                <span class="image_kill_referrer" :data-img="koubei.image.replace(/img[1-9]/,'img1')"></span>
+                <span slot="title">{{koubei.title}}</span>
+                <span slot="subTitle"><b>{{koubei.genres}}</b></span>
               </mu-grid-tile>
             </mu-grid-list>
          </div>
@@ -14,60 +15,45 @@
 </template>
 
 <script>
+// props:
+//      propsList  轮播展示的图片数组
+//      time       轮播间隔时间
 export default {
     name:"Lunbo",
-    data:function(){
-        return {
-            showIndex:0,
-             list: [{
-               image: '/static/images/breakfast.jpg',
-               title: 'Breakfast',
-               author: 'Myron',
-               featured: true
-             }, {
-               image: '/static/images/burger.jpg',
-               title: 'Burger',
-               author: 'Linyu'
-             }, {
-               image: '/static/images/camera.jpg',
-               title: 'Camera',
-               author: 'ruolin'
-             }, {
-               image: '/static/images/hats.jpg',
-               title: 'Hats',
-               author: 'kakali'
-             }, {
-               image: '/static/images/honey.jpg',
-               title: 'Honey',
-               author: 'yuyang'
-             }, {
-               image: '/static/images/morning.jpg',
-               title: 'Morning',
-               author: 'mokayi',
-               featured: true
-             }, {
-               image: '/static/images/vegetables.jpg',
-               title: 'Vegetables',
-               author: 'NUyyyyyyy'
-             }, {
-               image: '/static/images/water-plant.jpg',
-               title: 'water',
-               author: 'TDDyyyyyyy'
-             }]
+    props:{
+        time:{
+            type:Number
+        },
+        propsList:{
+             type: Array,
+             default: function () {
+               return []
+             }
         }
     },
-    computed:{
-        showIndex:function(){
-            var $this=this;
-            setTimeout(function(){
+    data:function(){
+        return {
+            showIndex:0
+        }
+    },
+    mounted:function(){
 
-                if($this.showIndex>=$this.list.length-1){
+    },
+    created:function(){
+        var $this=this;
+        $this.$nextTick(function(){
+            var killer_imgs= document.getElementsByClassName('image_kill_referrer');
+            for(var i =0; i<killer_imgs.length;i++){
+               killer_imgs[i].innerHTML = ReferrerKiller.imageHtml(killer_imgs[i].getAttribute('data-img'));
+            }
+        });
+            setInterval(function(){
+                if($this.showIndex>=$this.propsList.length-1){
                     $this.showIndex=0;
                 }else{
                     $this.showIndex++;
                 }
-            },2000)
-        }
+            },$this.time)
     }
 
 }
@@ -76,7 +62,7 @@ export default {
 <style lang="css">
 .lunbo{
     width:100%;
-    height: 280px;
+    height: 180px;
     overflow:hidden;
 }
 .lunbo .list{
@@ -86,8 +72,9 @@ export default {
     top:0;
     left:0;
 }
-.lunbo .gridlist-inline-demo{
-
+.lunbo .list img{
+    width:100%;
+    height:100%;
 }
 .gridlist-demo-container{
     width:100%;
@@ -97,8 +84,28 @@ export default {
     width:100%;
     height:100%;
 }
-
-.gridlist-inline-demo{
-
+.anim_fade_image{
+    -webkit-animation-name: fadeInOut;
+   -webkit-animation-timing-function: ease-in-out;
+   -webkit-animation-duration: 1s;
+   -webkit-animation-direction: alternate;
 }
+.mu-grid-tile-title-container{
+    text-align: left;
+}
+@-webkit-keyframes fadeInOut {
+    0% {
+        opacity:0;
+     }
+    25% {
+        opacity:0.25;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity:1;
+    }
+}
+
 </style>
