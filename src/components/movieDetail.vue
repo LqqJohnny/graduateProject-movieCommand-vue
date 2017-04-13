@@ -126,8 +126,11 @@ export default {
         showActorInfo:function(id){
 
         },
-    }
-
+    },
+	// activated(){
+	// 	this.guodu=true;
+	// 	this.getnews();
+	// }
 
 }
 </script>

@@ -9,6 +9,9 @@ import user from '@/components/user'
 Vue.use(Router)
 
 export default new Router({
+    scrollBehavior:function(to,from,savedPosition){
+        return savedPosition || {x:0,y:0}
+    },
   routes: [
     {
       path: '/',
