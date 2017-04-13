@@ -19,4 +19,26 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+.tag{
+    padding:1px 3px ;
+    background: #0a73ad;
+    color:#fff;
+    border-radius:3px;
+    display: inline-block;
+}
+.img_title{
+    width:100%;
+    padding:0 5px;
+    height: 20px;
+    line-height:20px;
+    color:#fff;
+    background-color: #444;
+    opacity: 0.7;
+    position: absolute;
+    bottom: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space:nowrap;
+}
+
 </style>

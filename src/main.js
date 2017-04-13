@@ -11,6 +11,8 @@ Vue.use(MuseUI);
 Vue.config.productionTip = false;
 Vue.use(resource);
 
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
