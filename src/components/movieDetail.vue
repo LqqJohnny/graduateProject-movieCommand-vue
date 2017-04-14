@@ -1,15 +1,15 @@
 <template lang="html">
   <div>
     <backHeader :title="movieTitle"></backHeader>
-    <Loader style="margin-top:200px;" v-if="movieInfo==''"></Loader>
-    <div class="content" v-if="movieInfo!=''">
+    <Loader style="margin-top:200px;" v-if="wait==true"></Loader>
+    <div class="content" v-show="wait==false">
         <div class="baseInfo clearfix">
             <div class="float-l image"><img :src="movieInfo.images.medium" alt=""></div>
             <div class="info float-l">
                 <p> 导演：
                     <span v-for="daoyan in movieInfo.directors">{{daoyan.name}}</span>
                 </p>
-                <p>主演：
+                <p v-if="movieInfo.casts.length>0">主演：
                     <span  v-for="actor in movieInfo.casts">{{actor.name}}</span>
                 </p>
                 <p>标签：
@@ -27,9 +27,8 @@
                 </div>
             </div>
 
-
-            <p class="movInfoTitle">主演阵容</p>
-            <div class="actors clearfix">
+            <p v-if="movieInfo.casts.length>0" class="movInfoTitle">主演阵容</p>
+            <div class="actors clearfix" v-if="movieInfo.casts.length>0">
                 <div class="actor float-l" v-for="actor in movieInfo.casts"
                 @click="showActorInfo(actor.id)">
                     <img :src="actor.avatars.small" alt="">
@@ -49,7 +48,7 @@
 <!-- 标签 -->
 
 <!-- 热门剧照    -->
-        <div class="hotPhotos">
+        <div class="hotPhotos" v-if="movieInfo.photos.length>0">
             <p class="movInfoTitle">热门剧照</p>
             <div class="photosContainer">
                 <div class="photos" id="photos">
@@ -61,7 +60,7 @@
             </div>
         </div>
 <!-- 热门评论 -->
-        <div class="hotShort">
+        <div class="hotShort" v-if="movieInfo.popular_reviews.length>0">
             <p class="movInfoTitle">热门评论</p>
             <div class="shorts">
                 <div class="shortComment" v-for="comment in movieInfo.popular_reviews">
@@ -93,44 +92,51 @@ export default {
     data:function(){
         return{
             movieInfo:"",
-            movieTitle:""
+            movieTitle:"",
+            wait:true
         }
     },
+    created:function(){
+        this.wait=true;
+    },
     mounted:function(){
-        const _this=this;
-        const id = 'https://api.douban.com/v2/movie/subject/' + this.$route.params.id + '?apikey=0b2bdeda43b5688921839c8ecb20399b&city=%E5%8C%97%E4%BA%AC&client=something&udid=dddddddddddddddddddddd'
-        this.$http.jsonp(id)
-        .then(function(response){
-            _this.movieInfo=response.body;
-            _this.movieTitle=response.body.title;
-            // console.log(JSON.stringify(response.body));
-             _this.$nextTick(function(){
-                 var killer_imgs= document.getElementsByClassName('image_kill_referrer');
-                 for(var i =0; i<killer_imgs.length;i++){
-                    killer_imgs[i].innerHTML = ReferrerKiller.imageHtml(killer_imgs[i].getAttribute('data-img'));
-                 }
-
-
-             })
-
-        })
-        .catch(function(response){
-            console.log(response);
-        })
+        this.getMov();
 
     },
     methods:{
         showDirectorInfo:function(id){
-
+            this.$router.push({path:'/director/'+id});
         },
         showActorInfo:function(id){
-
+            this.$router.push({path:'/actor/'+id});
         },
+        getMov:function(){
+            const _this=this;
+            const id = 'https://api.douban.com/v2/movie/subject/' + this.$route.params.id + '?apikey=0b2bdeda43b5688921839c8ecb20399b&city=%E5%8C%97%E4%BA%AC&client=something&udid=dddddddddddddddddddddd'
+            this.$http.jsonp(id)
+            .then(function(response){
+                _this.movieInfo=response.body;
+                _this.movieTitle=response.body.title;
+                // console.log(JSON.stringify(response.body));
+                 _this.$nextTick(function(){
+                     var killer_imgs= document.getElementsByClassName('image_kill_referrer');
+                     for(var i =0; i<killer_imgs.length;i++){
+                        killer_imgs[i].innerHTML = ReferrerKiller.imageHtml(killer_imgs[i].getAttribute('data-img'));
+                     }
+                 })
+                 _this.wait=false;
+
+            })
+            .catch(function(response){
+                console.log(response);
+            })
+        }
     },
-	// activated(){
-	// 	this.guodu=true;
-	// 	this.getnews();
-	// }
+	activated:function(){
+        this.wait=true;
+        this.movieTitle="";
+		this.getMov();
+	}
 
 }
 </script>
@@ -180,9 +186,10 @@ body,html{
     position: relative;
     font-size: 16px;
     padding:0 5px;
+    margin:10px 0;
 }
 .actor,.director{
-    margin:0 10px;
+    margin:0 5px;
     position: relative;
 }
 .movSummary{
@@ -229,7 +236,7 @@ body,html{
 .hotPhotos{
     padding:10px;
     position:relative;
-    height:200px;
+    height:160px;
 }
 .photos{
     padding:10px;

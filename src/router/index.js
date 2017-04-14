@@ -5,6 +5,7 @@ import actor from '@/components/actor'
 import discovery from '@/components/discovery'
 import movieDetail from '@/components/movieDetail'
 import user from '@/components/user'
+import search from '@/components/search'
 
 Vue.use(Router)
 
@@ -33,6 +34,10 @@ export default new Router({
       path: '/actor/:id',
       name: 'actor',
       component: actor
+    },{
+      path: '/search/:id',
+      name: 'search',
+      component: search
     }
   ]
 })

@@ -109,7 +109,7 @@ export default {
         .catch(function (response) {
           console.log(response)
         })
-return;
+// return;
         // 即将上映
         this.$http.jsonp('https://api.douban.com/v2/movie/coming_soon?apikey=0b2bdeda43b5688921839c8ecb20399b')
         .then(function(response){

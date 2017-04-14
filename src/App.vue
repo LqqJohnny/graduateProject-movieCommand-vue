@@ -22,7 +22,7 @@ export default {
   margin-top: 60px;
 }
 .tag{
-    padding:1px 3px ;
+    padding:2px 5px ;
     background: #0a73ad;
     color:#fff;
     border-radius:3px;
