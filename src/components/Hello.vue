@@ -6,8 +6,9 @@
             <Lunbo v-if="koubeiMovData.length>0" :time="5000" :propsList="koubeiMovData"></Lunbo>
 
 <!-- 最新影讯 -->
-            <div class="newestMov">
+            <div class="newestMov relative">
                 <div class="title">最新上映</div>
+                <router-link to="/onShow" class="moreMov">更多>></router-link>
                 <Loader v-if="newestMovData.length==0"></Loader>
                 <div  v-if="newestMovData.length>0" class="newestList clearfix">
                     <div class="movie float-l" v-for="movie,index in newestMovData"
@@ -18,8 +19,9 @@
                 </div>
             </div>
 <!-- 即将上应 -->
-            <div class="comingMov ">
+            <div class="comingMov relative">
                 <div class="title">即将上映</div>
+                <router-link to="/coming" class="moreMov">更多>></router-link>
                 <Loader v-if="comingMovData.length==0"></Loader>
                 <div  v-if="comingMovData.length>0"  class="comingList clearfix">
                     <div class="movie float-l" v-for="movie,index in comingMovData"
@@ -30,11 +32,11 @@
                 </div>
             </div>
 <!-- 猜你喜欢 -->
-            <div class="mayLike">
+            <div class="mayLike relative" >
                 <div class="title">
                     猜你喜欢
                     <div class="changeBtn">
-                        <mu-icon value="cached" color="#333" style="font-size:20px;vertical-align:middle;" class="dis_inline_b"/>
+                        <mu-icon value="cached" class=""/>
                         <span class="dis_inline_b">换一批</span>
                     </div>
                 </div>
@@ -86,23 +88,26 @@ export default {
         .then(function(response){
             var movie=[];
             // 循环获得 电影剧照
-             for(var i =0; i<2;i++){
+             for(var i =0; i<5;i++){
                     var kbMov=response.body.subjects[i].subject;
                     this.$http.jsonp('https://api.douban.com/v2/movie/subject/'+kbMov.id+'/photos?apikey=0b2bdeda43b5688921839c8ecb20399b')
                     .then(function(res){
                         var resbody=res.body;
-                        movie.push({title:resbody.subject.original_title,genres:kbMov.genres.join("、"),image:resbody.photos[2].image.replace(/img[1-9]/,"img1")})
+                        // console.log(resbody);
+                        movie.push({id:resbody.subject.id,title:resbody.subject.original_title,genres:kbMov.genres.join("、"),image:resbody.photos[2].image.replace(/img[1-9]/,"img1")})
                     })
              }
+
              $this.koubeiMovData=movie;
+
         })
         .catch(function (response) {
           console.log(response)
         })
 
-// return;
+return;
         //  正在上映
-        this.$http.jsonp('https://api.douban.com/v2/movie/in_theaters?apikey=0b2bdeda43b5688921839c8ecb20399b')
+        this.$http.jsonp('https://api.douban.com/v2/movie/in_theaters?apikey=0b2bdeda43b5688921839c8ecb20399b&start=0&count=8')
         .then(function(response){
              this.newestMovData = response.body.subjects;
         })
@@ -111,7 +116,7 @@ export default {
         })
 // return;
         // 即将上映
-        this.$http.jsonp('https://api.douban.com/v2/movie/coming_soon?apikey=0b2bdeda43b5688921839c8ecb20399b')
+        this.$http.jsonp('https://api.douban.com/v2/movie/coming_soon?apikey=0b2bdeda43b5688921839c8ecb20399b&start=0&count=8')
         .then(function(response){
              this.comingMovData = response.body.subjects;
         })
@@ -155,10 +160,17 @@ export default {
 }
 .changeBtn{
     position:absolute;
-    right:20px;
+    right:10px;
     top:0;
     font-size: 14px;
     line-height: 20px;
+    color:#2196F3;
+}
+.changeBtn .mu-icon{
+    position:absolute;
+    left:-15px;
+    font-size:20px;
+    color:#2196F3;
 }
 .dis_inline_b{
     display: inline-block;
@@ -180,5 +192,14 @@ li {
 
 a {
   color: #42b983;
+}
+.relative{
+    position: relative;
+}
+.moreMov{
+    position:absolute;
+    right:10px;
+    top:0;
+    color:rgb(36, 121, 199);
 }
 </style>
