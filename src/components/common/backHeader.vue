@@ -16,7 +16,7 @@ export default {
     },
     methods:{
         goBack:function(){
-             window.history.go(-1);
+            this.$router.go(-1);
         },
         goHome:function(){
             this.$router.push({path:"/"});

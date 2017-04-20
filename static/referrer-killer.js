@@ -61,7 +61,7 @@ var ReferrerKiller = (function () {
 	function escapeDoubleQuotes(str) {
 		return str.split('"').join('\\"');
 	}
-	
+
 	/**
 	 * Given a html string returns an html node.
 	 *
@@ -74,7 +74,7 @@ var ReferrerKiller = (function () {
 		container.innerHTML = html;
 		return container.firstChild;
 	}
-	
+
 	/**
 	 * Converts object to html attributes string.
 	 *
@@ -191,7 +191,7 @@ var ReferrerKiller = (function () {
 		html = '<a rel="noreferrer" href="' + urlRedirection + escapeDoubleQuotes(url) + '" ' + objectToHtmlAttributes(anchorParams) + '>' + innerHTML + '</a>';
 		return htmlString(html, iframeAttributes);
 	};
-	
+
 	/**
 	 * It creates a link without referrer.
 	 *
@@ -205,7 +205,7 @@ var ReferrerKiller = (function () {
 	var linkNode = PUB.linkNode = function (url, innerHTML, anchorParams, iframeAttributes) {
 		return htmlToNode(linkHtml(url, innerHTML, anchorParams, iframeAttributes));
 	};
-	
+
 	/**
 	 * It displays an image without sending the referrer.
 	 *
@@ -214,7 +214,7 @@ var ReferrerKiller = (function () {
 	 * @param {Object} [imgAttributesParam]
 	 * @return {String} html
 	 */
-	var imageHtml = PUB.imageHtml = function (url, imgAttributesParam) {
+	var imageHtml = PUB.imageHtml = function (url, imgAttributesParam,iframeAttributes) {
 		var imgAttributes = imgAttributesParam || {},
 		/*-- Making sure this styles are applyed in the image but let the possibility to overwrite them --*/
 			defaultStyles = 'border:none; margin: 0; padding: 0';
@@ -223,9 +223,9 @@ var ReferrerKiller = (function () {
 		} else {
 			imgAttributes.style = defaultStyles;
 		}
-		return htmlString('<img src="' + escapeDoubleQuotes(url) + '" ' + objectToHtmlAttributes(imgAttributes) + '/>');
+		return htmlString('<img style="max-height:300px;" src="' + escapeDoubleQuotes(url) + '" ' + objectToHtmlAttributes(imgAttributes) + '/>',iframeAttributes);
 	};
-	
+
 	/**
 	 * It displays an image without sending the referrer.
 	 *

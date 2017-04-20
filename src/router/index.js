@@ -6,7 +6,10 @@ import discovery from '@/components/discovery'
 import movieDetail from '@/components/movieDetail'
 import user from '@/components/user'
 import search from '@/components/search'
-
+import searchByTag from '@/components/searchByTag'
+import onShowMov from '@/components/onShowMov'
+import comingMov from '@/components/comingMov'
+import login from '@/components/login'
 Vue.use(Router)
 
 export default new Router({
@@ -38,6 +41,22 @@ export default new Router({
       path: '/search/:id',
       name: 'search',
       component: search
+    },{
+      path: '/searchByTag/:id',
+      name: 'searchByTag',
+      component: searchByTag
+    },{
+        path: '/onShow',
+        name: 'onShow',
+        component: onShowMov
+    },{
+      path: '/coming',
+      name: 'coming',
+      component: comingMov
+    },{
+      path: '/login',
+      name: 'login',
+      component: login
     }
   ]
 })

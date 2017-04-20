@@ -1,13 +1,31 @@
 <template lang="html">
 <div>
-    <MUheader></MUheader>
-        <div>user</div>
+        <div>
+<!-- 用户头像 -->
+            <div class="userHead">
+                <div class="usericon"><img src="./src/img/icon.jpeg" alt=""></div>
+            </div>
+<!-- 功能列表 -->
+            <mu-list>
+              <mu-list-item title="设置">
+                <mu-icon slot="left" value="settings"/>
+              </mu-list-item>
+              <mu-list-item title="修改信息">
+                <mu-icon slot="left" value="list"/>
+              </mu-list-item>
+              <mu-list-item title="反馈建议">
+                <mu-icon slot="left" value="send"/>
+              </mu-list-item>
+              <mu-list-item title="退出登录">
+                <mu-icon slot="left" value="power"/>
+              </mu-list-item>
+            </mu-list>
+        </div>
     <MUfooter  :tabValue="tabValue"></MUfooter>
 </div>
 </template>
 
 <script>
-import MUheader from './common/header.vue'
 import MUfooter from './common/footer.vue'
 import Loader from './common/loader.vue'
 export default {
@@ -17,11 +35,38 @@ export default {
         }
     },
     components:{
-        MUheader,MUfooter,Loader
+        MUfooter,Loader
     }
 
 }
 </script>
 
-<style lang="css">
+<style lang="scss">
+.userHead{
+    width:100%;
+    height:200px;
+    background-color: #2196F3;
+    position: absolute;
+    top:0;
+    .usericon{
+        width:100px;
+        height:100px;
+        border-radius:50%;
+        margin:40px auto;
+        background-color: #FFF;
+        overflow: hidden;
+        img{
+            width:100%;
+            height:100%;
+        }
+    }
+}
+.mu-list{
+    margin-top:200px;
+    text-align: left;
+    .mu-item-left{
+        left:28px;
+    }
+}
+
 </style>

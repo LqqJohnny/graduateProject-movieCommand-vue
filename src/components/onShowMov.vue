@@ -2,11 +2,7 @@
 <div>
     <backHeader :title="title" style="font-size:16px;"></backHeader>
     <!-- 搜索词：{{this.$route.params.id}} -->
-    <!-- 搜索框 -->
-    <div class="searchArea">
-        <i  @click="searchMov()" class=" search_icon material-icons">search</i>
-        <input type="text" v-model="searchword"  @keydown.enter="searchMovie()">
-    </div>
+
     <Loader style="margin-top:200px;" v-if="wait==true"></Loader>
     <div class="content" v-if="wait==false">
         <div class="star-movie-wrap">
@@ -39,7 +35,7 @@ import Loader from './common/loader.vue'
 export default {
     data:function(){
         return{
-            title:'"'+this.$route.params.id+'"的搜索结果',
+            title:'最新上映',
             wait:true,
             searchMov:[],
             searchword:this.$route.params.id
@@ -48,28 +44,17 @@ export default {
     components:{
         backHeader,Loader
     },
-    // mounted:function(){
-    //     this.getSearchMov();
-    // },
     methods:{
-        searchMovie:function(){
-            this.wait=true;
-            this.searchMov=[];
-            this.title="";
-            this.$router.push({path:"/search/"+this.searchword});
-            this.getSearchMov();
-        },
         movieMsg:function(movID){
             const id="/movie/"+movID;
             this.$router.push({path:id});
         },
-        getSearchMov:function(){
+        getNewestMov:function(){
             const _this=this;
-            const id = 'https://api.douban.com/v2/movie/search?q='+_this.$route.params.id+'&apikey=0b2bdeda43b5688921839c8ecb20399b&udid=dddddddddddddddddddddd'
+            const id = 'https://api.douban.com/v2/movie/in_theaters?apikey=0b2bdeda43b5688921839c8ecb20399b&start=0&count=40';
             this.$http.jsonp(id)
             .then(function(res){
                 _this.searchMov=res.body.subjects;
-                console.log(res.body);
                 _this.wait=false;
             })
             .catch(function(res){
@@ -79,23 +64,20 @@ export default {
     },
     activated:function(){
         this.searchword=this.$route.params.id;
-        this.title='"'+this.$route.params.id+'"的搜索结果',
         this.wait=true;
         this.movieTitle="";
-		this.getSearchMov();
+		this.getNewestMov();
 	}
 }
 </script>
 
 <style lang="css" scoped>
-.searchArea{
-    margin-top:70px;
-}
+
 .content{
     width:100%;
     position: fixed;
     bottom:5px;
-    top:106px;
+    top:56px;
     overflow:auto;
 }
 p{

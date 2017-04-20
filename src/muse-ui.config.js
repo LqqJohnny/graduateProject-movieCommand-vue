@@ -8,6 +8,7 @@ import badge from 'muse-components/badge'
 import * as bottomNav from 'muse-components/bottomNav'
 import flatButton from 'muse-components/flatButton'
 import iconButton from 'muse-components/iconButton'
+import raisedButton from 'muse-components/raisedButton'
 import chip from 'muse-components/chip'
 import drawer from 'muse-components/drawer'
 import icon from 'muse-components/icon'
@@ -17,6 +18,7 @@ import * as tabs from 'muse-components/tabs'
 import divider from 'muse-components/divider'
 import subHeader from 'muse-components/subHeader'
 import * as gridList from 'muse-components/gridList'
+import dialog from 'muse-components/dialog'
 
 // 这个模块在项目官网上并没有看到，但是看到作者在issues上回答时说是高分辨率屏的处理，于是就试着加进去了
 import {retina} from 'muse-components/utils'
@@ -28,6 +30,7 @@ const components = {
   ...bottomNav,
   flatButton,
   iconButton,
+  raisedButton,
   chip,
   drawer,
   icon,
@@ -36,7 +39,8 @@ const components = {
   ...tabs,
   divider,
   subHeader,
-  ...gridList
+  ...gridList,
+  dialog
 }
 
 export default {

@@ -1,10 +1,12 @@
 <template lang="html">
-    <div class="lunbo">
+    <div class="lunbo" id="lunbo">
         <div class="gridlist-demo-container">
             <mu-grid-list class="gridlist-inline-demo">
               <mu-grid-tile v-for="koubei, index in propsList" :key="index"
-                            v-show='index==showIndex' style="width:100%;padding:0;" class="anim_fade_image list">
+                            v-show='index==showIndex' style="width:100%;padding:0;" @click="al()" class="anim_fade_image list">
                 <!-- <img :src="koubei.image"/> -->
+                <!-- 点击iframe中的东西没反应 用一个mask来覆盖iframe -->
+                <div class="mask" @click="showMovDetail(koubei.id)"></div>
                 <span class="image_kill_referrer" :data-img="koubei.image.replace(/img[1-9]/,'img1')"></span>
                 <span slot="title">{{koubei.title}}</span>
                 <span slot="subTitle"><b>{{koubei.genres}}</b></span>
@@ -36,24 +38,44 @@ export default {
             showIndex:0
         }
     },
-    mounted:function(){
+    methods:{
 
+        showMovDetail:function(movID){
+            const id="/movie/"+movID;
+            this.$router.push({path:id});
+        },
+        killImg:function(i){
+
+                var killer_imgs= document.getElementsByClassName('image_kill_referrer');
+                console.log(killer_imgs[i].innerHTML);
+                var lunbo= document.getElementById("lunbo");
+                var iframeStyle={
+                    style:'width:'+lunbo.width+';'
+                };
+                if(killer_imgs[i].innerHTML==""){
+                    killer_imgs[i].innerHTML = ReferrerKiller.imageHtml(killer_imgs[i].getAttribute('data-img'),null,iframeStyle);
+                }
+        }
     },
     created:function(){
         var $this=this;
-        $this.$nextTick(function(){
-            var killer_imgs= document.getElementsByClassName('image_kill_referrer');
-            for(var i =0; i<killer_imgs.length;i++){
-               killer_imgs[i].innerHTML = ReferrerKiller.imageHtml(killer_imgs[i].getAttribute('data-img'));
-            }
-        });
             setInterval(function(){
                 if($this.showIndex>=$this.propsList.length-1){
                     $this.showIndex=0;
+
                 }else{
                     $this.showIndex++;
                 }
-            },$this.time)
+            },$this.time);
+    },
+    updated:function(){
+        var killer_imgs= document.getElementsByClassName('image_kill_referrer');
+        var iframeStyle={
+            // style:'width:'+lunbo.width+';'
+        };
+        for(var i =0; i<killer_imgs.length;i++){
+           killer_imgs[i].innerHTML = ReferrerKiller.imageHtml(killer_imgs[i].getAttribute('data-img'),null,iframeStyle);
+        }
     }
 
 }
@@ -107,5 +129,12 @@ export default {
         opacity:1;
     }
 }
-
+.mask{
+    width:100%;
+    height:100%;
+    z-index:10000;
+    background-color:#ccc;
+    position:absolute;
+    opacity: 0;
+}
 </style>

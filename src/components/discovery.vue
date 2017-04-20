@@ -36,6 +36,36 @@ export default {
                 name:"科幻"
             },{
                 name:"推理"
+            },{
+                name:"经典"
+            },{
+                name:"华语"
+            },{
+                name:"欧美"
+            },{
+                name:"韩国"
+            },{
+                name:"日本"
+            },{
+                name:"动作"
+            },{
+                name:"喜剧"
+            },{
+                name:"治愈"
+            },{
+                name:"青春"
+            },{
+                name:"励志"
+            },{
+                name:"运动"
+            },{
+                name:"成长"
+            },{
+                name:"冒险"
+            },{
+                name:"赛车"
+            },{
+                name:"浪漫"
             },]
         }
     },
@@ -78,7 +108,7 @@ export default {
     border:1px solid #2196f3;
 }
 .tag{
-    margin:0 5px;
+    margin:5px;
 
 }
 .search_icon{

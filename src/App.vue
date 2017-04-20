@@ -42,5 +42,8 @@ export default {
     text-overflow: ellipsis;
     white-space:nowrap;
 }
-
+.noData{
+    font-size: 20px;
+    margin-top:100px;
+}
 </style>

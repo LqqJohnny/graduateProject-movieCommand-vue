@@ -5,12 +5,12 @@
     <!-- 搜索框 -->
     <div class="searchArea">
         <i  @click="searchMov()" class=" search_icon material-icons">search</i>
-        <input type="text" v-model="searchword"  @keydown.enter="searchMovie()">
+        <input type="text" v-model="tagName"  @keydown.enter="searchMovie()">
     </div>
     <Loader style="margin-top:200px;" v-if="wait==true"></Loader>
     <div class="content" v-if="wait==false">
         <div class="star-movie-wrap">
-          <div class="star-movie clearfix" @click="movieMsg(item.id)" v-for="item in searchMov">
+          <div class="star-movie clearfix" @click="movieMsg(item.id)" v-for="item in movInfo">
             <div class="float-l">
               <img  :src="item.images.small">
             </div>
@@ -27,10 +27,10 @@
             </div>
           </div>
         </div>
-        <div class="noData" v-if="searchMov.length==0">抱歉，搜索不到相关电影</div>
+        <div class="noData" v-if="movInfo.length==0">抱歉，搜索不到相关电影</div>
     </div>
-
 </div>
+
 </template>
 
 <script>
@@ -38,37 +38,24 @@ import backHeader from './common/backHeader.vue'
 import Loader from './common/loader.vue'
 export default {
     data:function(){
-        return{
-            title:'"'+this.$route.params.id+'"的搜索结果',
+        return {
+            tagName:this.$route.params.id,
+            movInfo:[],
             wait:true,
-            searchMov:[],
-            searchword:this.$route.params.id
         }
     },
-    components:{
-        backHeader,Loader
-    },
-    // mounted:function(){
-    //     this.getSearchMov();
-    // },
+
     methods:{
-        searchMovie:function(){
-            this.wait=true;
-            this.searchMov=[];
-            this.title="";
-            this.$router.push({path:"/search/"+this.searchword});
-            this.getSearchMov();
-        },
         movieMsg:function(movID){
             const id="/movie/"+movID;
             this.$router.push({path:id});
         },
-        getSearchMov:function(){
+        getTagMov:function(){
             const _this=this;
-            const id = 'https://api.douban.com/v2/movie/search?q='+_this.$route.params.id+'&apikey=0b2bdeda43b5688921839c8ecb20399b&udid=dddddddddddddddddddddd'
+            const id = 'https://api.douban.com/v2/movie/search?tag='+_this.$route.params.id+'&apikey=0b2bdeda43b5688921839c8ecb20399b&udid=dddddddddddddddddddddd'
             this.$http.jsonp(id)
             .then(function(res){
-                _this.searchMov=res.body.subjects;
+                _this.movInfo=res.body.subjects;
                 console.log(res.body);
                 _this.wait=false;
             })
@@ -77,12 +64,18 @@ export default {
             })
         }
     },
+    components:{
+        backHeader,Loader
+    },
+    computed:{
+        title:function(){
+            return '"'+this.tagName+'"电影';
+        }
+    },
     activated:function(){
-        this.searchword=this.$route.params.id;
-        this.title='"'+this.$route.params.id+'"的搜索结果',
+        this.tagName=this.$route.params.id;
         this.wait=true;
-        this.movieTitle="";
-		this.getSearchMov();
+		this.getTagMov();
 	}
 }
 </script>
