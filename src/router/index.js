@@ -26,7 +26,7 @@ export default new Router({
         name: 'discovery',
         component: discovery
     },{
-        path: '/user/:id',
+        path: '/user',
         name: 'user',
         component: user
     },{

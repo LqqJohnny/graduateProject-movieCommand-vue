@@ -9,9 +9,31 @@
             </div>
 <!-- 热门标签 -->
             <div class="hotTags">
-                <span class="tag" @click="searchByTag(tag.name)" v-for="tag in hotTags">{{tag.name}}</span>
+                <!-- <span class="tag" @click="searchByTag(tag.name)" v-for="tag in hotTags">{{tag.name}}</span> -->
+                 <mu-raised-button :key="tag.id" :label="tag.name" mu-chip @click="searchByTag(tag.name)" v-for="tag in hotTags" class="demo-raised-button"/>
             </div>
+<!-- 我的标签 -->
+            <div class="myTags">
+                    <div class="title">我的标签
+                        <div class="toggleDel" v-if="likeTags.length>0" @click="toggleDelMode()">{{manageBtnText}}</div>
+                    </div>
+                    <Loader v-if="likeWait"></Loader>
+                    <div class="tags" v-if="!likeWait&&likeTags.length>0">
+                        <!-- 正常显示我的标签 未进入删除模式 -->
+                        <mu-chip v-if="!deleteTagMode" :key="tag.id" mu-chip @click="searchByTag(tag.id)"  v-for="tag in likeTags" class="demo-chip">
+                         {{tag.tagname}}
+                        </mu-chip>
+                        <!-- 点击了删除 -->
+                        <mu-chip v-if="deleteTagMode" :key="tag.id" v-for="tag in likeTags"  class="demo-chip"  @delete="deleteTag(tag.id)" showDelete>
+                           {{tag.tagname}}
+                        </mu-chip>
+                    </div>
+                    <!-- 无喜欢的标签 点击去添加 -->
+                    <div class="addLiketags" v-if="!likeWait&&likeTags.length==0">
+                        你还没有喜欢的标签
+                    </div>
 
+            </div>
         </div>
       <MUfooter  :tabValue="tabValue"></MUfooter>
   </div>
@@ -21,9 +43,21 @@
 import MUheader from './common/header.vue'
 import MUfooter from './common/footer.vue'
 import Loader from './common/loader.vue'
+import host from '../apiConfig.js'
 export default {
+    activated:function(){
+        this.likeWait=true;
+        this.likeTags=[];
+        this.manageBtnText="管理";
+        this.deleteTagMode=false;
+        this.getLikeTags();
+    },
     data:function(){
         return{
+            likeWait:true,
+            likeTags:[],
+            manageBtnText:"管理",
+            deleteTagMode:false,
             tabValue:"two",
             searchword:"",
             hotTags:[{
@@ -69,7 +103,42 @@ export default {
             },]
         }
     },
+    mounted(){
+        if(this.$store.state.userid!=""){
+            this.getLikeTags();
+        }
+    },
     methods:{
+        getLikeTags(){
+            var _this= this;
+            this.$http.get(host.apiHost+'getLikeTags.do?userid='+this.$store.state.userid)
+            .then(function(res){
+                console.log(res.body);
+                _this.likeTags=res.body;
+                _this.likeWait=false;
+            })
+            .catch(function(){
+                console.log(res.body);
+            })
+        },
+        toggleDelMode(){
+            if(this.manageBtnText=="管理"){
+                this.manageBtnText="完成";
+            }else{
+                this.manageBtnText="管理";
+            }
+            this.deleteTagMode=!this.deleteTagMode;
+        },
+        deleteTag(id){
+            var _this= this;
+            this.$http.get(host.apiHost+'delLikeTags.do?liketagId='+id)
+            .then(function(res){
+                console.log(res.body);
+            })
+            .catch(function(){
+                console.log(res.body);
+            })
+        },
         searchByTag:function(name){
             this.$router.push({path:"/searchByTag/"+name});
         },
@@ -80,6 +149,7 @@ export default {
     components:{
         MUheader,MUfooter,Loader
     }
+
 
 }
 </script>
@@ -111,6 +181,9 @@ export default {
     margin:5px;
 
 }
+.demo-raised-button{
+    width:20%;
+}
 .search_icon{
     font-size: 26px;
     position: absolute;
@@ -118,5 +191,21 @@ export default {
     color:#2196f3;
     line-height:30px;
 
+}
+.myTags .title{
+    font-size:16px;
+    text-align: left;
+    margin:15px;
+    position: relative;
+}
+.myTags .demo-chip{
+    margin:5px 10px;
+}
+.toggleDel{
+    position: absolute;
+    right:10px;
+    top:0;
+    font-size:14px;
+    color:#2196f3;
 }
 </style>

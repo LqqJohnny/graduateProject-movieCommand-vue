@@ -2,7 +2,12 @@
     <mu-bottom-nav style="position: fixed;" :value="bottomNav">
       <mu-bottom-nav-item value="one" exact="true" replace="true" title="首页" icon="home" href="#/" />
       <mu-bottom-nav-item value="two" exact="true"  replace="true" title="发现" icon="search" href="#/discovery" />
-      <mu-bottom-nav-item value="three" exact="true" replace="true" title="我的" icon="person pin" href="#/user/28323" />
+
+      <mu-bottom-nav-item v-if="haslogin" value="three" exact="true" replace="true" title="我的" icon="person pin"
+      href="#/user" />
+      <mu-bottom-nav-item v-if="!haslogin" value="three" exact="true" replace="true" title="我的" icon="person pin"
+      href="#/login" />
+
     </mu-bottom-nav>
 </template>
 
@@ -11,7 +16,7 @@ export default {
   data () {
     return {
     //   bottomNav:"one",
-      bottomNavColor: 'one'
+      bottomNavColor: 'one',
     }
   },
   props:{
@@ -22,6 +27,13 @@ export default {
   computed:{
       bottomNav:function(){
           return this.tabValue;
+      },
+      haslogin:function(){
+          if(this.$store.state.userid=="" || this.$store.state.userid==null){
+              return false;
+          }else{
+              return true;
+          }
       }
   },
   methods: {

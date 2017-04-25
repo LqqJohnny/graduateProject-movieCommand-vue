@@ -1,18 +1,41 @@
 <template>
   <div id="app">
     <keep-alive>
-        <router-view></router-view>
+            <router-view></router-view>
     </keep-alive>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'app'
+  name: 'app',
+  // data(){
+  //   return{
+  //       transitionName:"slideright"
+  //   }
+  // },
+  // watch: {
+  // '$route' (to, from) {
+  //   const toDepth = to.path.split('/').length
+  //   const fromDepth = from.path.split('/').length
+  //   this.transitionName = toDepth < fromDepth ? 'slideright' : 'slideleft'
+  // }
+
 }
 </script>
 
 <style>
+    .slideright-enter-active, .slideright-leave-active {
+      transition: all .5s;
+    }
+    .slideright-enter, .slideright-leave-to{
+      opacity: 0;
+      transform: translateX(100px);
+    }
+body{
+    position:relative;
+    left:0;
+}
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -20,6 +43,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+
 }
 .tag{
     padding:2px 5px ;

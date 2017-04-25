@@ -4,6 +4,7 @@
 <!-- 用户头像 -->
             <div class="userHead">
                 <div class="usericon"><img src="./src/img/icon.jpeg" alt=""></div>
+                <div class="username">{{this.$store.state.username}}</div>
             </div>
 <!-- 功能列表 -->
             <mu-list>
@@ -16,7 +17,7 @@
               <mu-list-item title="反馈建议">
                 <mu-icon slot="left" value="send"/>
               </mu-list-item>
-              <mu-list-item title="退出登录">
+              <mu-list-item title="退出登录" @click="logout">
                 <mu-icon slot="left" value="power"/>
               </mu-list-item>
             </mu-list>
@@ -32,6 +33,20 @@ export default {
     data:function(){
         return{
             tabValue:"three"
+        }
+    },
+    methods:{
+        logout(){
+            this.$store.state.userid="";
+            this.$store.state.username="";
+            this.$router.push({path:"/"})
+        }
+    },
+    beforeCreate(){
+        var userid = this.$store.state.userid;
+        console.log("userid"+userid);
+        if(userid==null || userid==""){
+            this.$router.push({path:"/login"});
         }
     },
     components:{
@@ -52,13 +67,17 @@ export default {
         width:100px;
         height:100px;
         border-radius:50%;
-        margin:40px auto;
+        margin:30px auto 10px;
         background-color: #FFF;
         overflow: hidden;
         img{
             width:100%;
             height:100%;
         }
+    }
+    .username{
+        font-size:20px;
+        color:white;
     }
 }
 .mu-list{

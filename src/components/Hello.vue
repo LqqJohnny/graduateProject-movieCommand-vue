@@ -32,7 +32,7 @@
                 </div>
             </div>
 <!-- 猜你喜欢 -->
-            <div class="mayLike relative" >
+            <div v-if="haslogin" class="mayLike relative" >
                 <div class="title">
                     猜你喜欢
                     <div class="changeBtn">
@@ -49,6 +49,15 @@
                         <img :src="movie.images.small" alt="">
                     </div>
                 </div>
+            </div>
+            <!-- 未登录 提示登陆 -->
+            <div class="loginTip" v-if="!haslogin">
+                <div class="title">
+                    猜你喜欢
+                </div>
+
+                  <mu-raised-button label="请先登陆" style="margin-top:50px;" href="#/login" class="demo-raised-button" primary/>
+
             </div>
         </div>
 
@@ -71,6 +80,15 @@ export default {
             comingMovData:[]
         }
     },
+    computed:{
+        haslogin:function(){
+            if(this.$store.state.userid=="" || this.$store.state.userid==null){
+                return false;
+            }else{
+                return true;
+            }
+        }
+    },
     methods:{
         showMovDetail:function(movID){
             const id="/movie/"+movID;
@@ -82,6 +100,7 @@ export default {
     },
     mounted:function(){
         // return;
+
         const $this = this;
         // 口碑榜
         this.$http.jsonp('https://api.douban.com/v2/movie/weekly?apikey=0b2bdeda43b5688921839c8ecb20399b&start=1&count=20')
@@ -124,7 +143,9 @@ return;
           console.log(response)
         })
         //猜你喜欢
-
+        if(this.haslogin){
+            //  调用 接口
+        }
     }
 
 }

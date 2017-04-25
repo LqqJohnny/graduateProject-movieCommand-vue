@@ -20,7 +20,7 @@
         <div class="people">
             <p class="movInfoTitle">导演</p>
             <div class="directors clearfix">
-                <div class="director float-l" v-for="director in movieInfo.directors"
+                <div class="director" v-for="director in movieInfo.directors"
                 @click="showDirectorInfo(director.id)">
                     <img :src="director.avatars.small" alt="">
                     <div class="img_title">{{director.name}}</div>
@@ -29,7 +29,7 @@
 
             <p v-if="movieInfo.casts.length>0" class="movInfoTitle">主演阵容</p>
             <div class="actors clearfix" v-if="movieInfo.casts.length>0">
-                <div class="actor float-l" v-for="actor in movieInfo.casts"
+                <div class="actor" v-for="actor in movieInfo.casts"
                 @click="showActorInfo(actor.id)">
                     <img :src="actor.avatars.small" alt="">
                     <div  class="img_title">{{actor.name}}</div>
@@ -101,7 +101,6 @@ export default {
     },
     mounted:function(){
         this.getMov();
-
     },
     methods:{
         showDirectorInfo:function(id){
@@ -163,15 +162,18 @@ body,html{
 .image{
     margin:20px 20px;
 }
+.img_title{
+    text-align: center;
+}
 .info {
     min-height:140px;
     margin:20px 0 20px 0;
-    min-width:200px;
+    min-width:150px;
 }
 .info p{
     margin:10px 0;
     text-align: left;
-    width:200px;
+    width:150px;
     word-wrap: break-word;
     word-break: break-all;
 }
@@ -188,9 +190,17 @@ body,html{
     padding:0 5px;
     margin:10px 0;
 }
+.actors,.directors{
+    white-space: nowrap;
+    overflow-x: auto;
+    text-align: left;
+}
 .actor,.director{
     margin:0 5px;
     position: relative;
+    width:70px;
+    height:106px;
+    display: inline-block;
 }
 .movSummary{
     padding:10px;

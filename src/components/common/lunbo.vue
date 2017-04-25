@@ -8,8 +8,8 @@
                 <!-- 点击iframe中的东西没反应 用一个mask来覆盖iframe -->
                 <div class="mask" @click="showMovDetail(koubei.id)"></div>
                 <span class="image_kill_referrer" :data-img="koubei.image.replace(/img[1-9]/,'img1')"></span>
-                <span slot="title">{{koubei.title}}</span>
-                <span slot="subTitle"><b>{{koubei.genres}}</b></span>
+                <span slot="title">{{koubei.title}} ({{koubei.genres}})</span>
+                <span slot="subTitle"><b></b></span>
               </mu-grid-tile>
             </mu-grid-list>
          </div>
@@ -111,6 +111,9 @@ export default {
    -webkit-animation-timing-function: ease-in-out;
    -webkit-animation-duration: 1s;
    -webkit-animation-direction: alternate;
+}
+.mu-grid-tile-titlebar{
+    height:30px !important;
 }
 .mu-grid-tile-title-container{
     text-align: left;

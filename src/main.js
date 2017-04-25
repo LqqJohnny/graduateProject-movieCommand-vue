@@ -6,17 +6,32 @@ import router from './router'
 import resource from 'vue-resource'
 import MuseUI from './muse-ui.config'
 import 'muse-ui/dist/theme-light.css'
+import Vuex from 'vuex'
 
+Vue.use(Vuex);
 Vue.use(MuseUI);
 Vue.config.productionTip = false;
 Vue.use(resource);
 
 
+const  vuex_store = new Vuex.Store({
+    state:{
+        username:"",
+        userid:"",
+        phone:""
+    },
+    mutations:{
+        showUserName(state){
+            alert("main.js"+state.user_name);
+        }
+    }
+})
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store:vuex_store,
   template: '<App/>',
   components: { App }
 })
