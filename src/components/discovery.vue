@@ -15,22 +15,32 @@
 <!-- 我的标签 -->
             <div class="myTags">
                     <div class="title">我的标签
+                        <mu-raised-button v-if="deleteTagMode" label="添加关注" style="margin-top:20px;" href="#/addLike" class="addLike demo-raised-button" primary/>
                         <div class="toggleDel" v-if="likeTags.length>0" @click="toggleDelMode()">{{manageBtnText}}</div>
                     </div>
-                    <Loader v-if="likeWait"></Loader>
-                    <div class="tags" v-if="!likeWait&&likeTags.length>0">
-                        <!-- 正常显示我的标签 未进入删除模式 -->
-                        <mu-chip v-if="!deleteTagMode" :key="tag.id" mu-chip @click="searchByTag(tag.id)"  v-for="tag in likeTags" class="demo-chip">
-                         {{tag.tagname}}
-                        </mu-chip>
-                        <!-- 点击了删除 -->
-                        <mu-chip v-if="deleteTagMode" :key="tag.id" v-for="tag in likeTags"  class="demo-chip"  @delete="deleteTag(tag.id)" showDelete>
-                           {{tag.tagname}}
-                        </mu-chip>
+                    <div v-if="haslogin">
+                        <Loader v-if="likeWait"></Loader>
+                        <div class="tags" v-if="!likeWait&&likeTags.length>0">
+                            <!-- 正常显示我的标签 未进入删除模式 -->
+                            <mu-chip v-if="!deleteTagMode" :key="tag.id" mu-chip @click="searchByTag(tag.tagname)"  v-for="(tag,index) in likeTags" class="demo-chip">
+                             {{tag.tagname}}
+                            </mu-chip>
+                            <!-- 点击了管理-->
+                            <mu-chip v-if="deleteTagMode" :key="tag.id" v-for="(tag,index) in likeTags"  class="demo-chip"  @delete="deleteTag(tag.id,index)" showDelete>
+                               {{tag.tagname}}
+                            </mu-chip>
+                        </div>
+
+                        <!-- 无喜欢的标签 点击去添加 -->
+                        <div class="addLiketags" v-if="!likeWait&&likeTags.length==0">
+                            你还没有关注的标签
+                            <br>
+                            <mu-raised-button label="添加关注" style="margin-top:20px;" href="#/addLike" class="demo-raised-button" primary/>
+                        </div>
                     </div>
-                    <!-- 无喜欢的标签 点击去添加 -->
-                    <div class="addLiketags" v-if="!likeWait&&likeTags.length==0">
-                        你还没有喜欢的标签
+                    <!-- 未登录 -->
+                    <div class="loginTip" v-if="!haslogin">
+                          <mu-raised-button label="请先登陆" style="margin-top:30px;" href="#/login" class="demo-raised-button" primary/>
                     </div>
 
             </div>
@@ -108,6 +118,15 @@ export default {
             this.getLikeTags();
         }
     },
+    computed:{
+        haslogin:function(){
+            if(this.$store.state.userid=="" || this.$store.state.userid==null){
+                return false;
+            }else{
+                return true;
+            }
+        }
+    },
     methods:{
         getLikeTags(){
             var _this= this;
@@ -129,11 +148,14 @@ export default {
             }
             this.deleteTagMode=!this.deleteTagMode;
         },
-        deleteTag(id){
+        deleteTag(id,index){
             var _this= this;
             this.$http.get(host.apiHost+'delLikeTags.do?liketagId='+id)
             .then(function(res){
                 console.log(res.body);
+                if(res.body==1){
+                    _this.likeTags.splice(index,1);
+                }
             })
             .catch(function(){
                 console.log(res.body);
@@ -197,6 +219,28 @@ export default {
     text-align: left;
     margin:15px;
     position: relative;
+}
+.myTags .title:before{
+    content:"";
+    position:absolute;
+    background-color: #2196f3;
+    width:5px;
+    height: 20px;
+    left:-10px;
+
+}
+.myTags .title .addLike{
+    height:25px;
+    line-height:25px;
+    font-size:14px;
+    width:40px;
+    position: absolute;
+    right:50px;
+    top:0;
+    margin-top:0!important;
+}
+.myTags .title .mu-raised-button-label{
+    padding:0;
 }
 .myTags .demo-chip{
     margin:5px 10px;

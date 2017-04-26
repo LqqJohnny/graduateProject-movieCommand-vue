@@ -14,7 +14,7 @@
                     <div class="movie float-l" v-for="movie,index in newestMovData"
                      v-if="index<8"
                      v-on:click="showMovDetail(movie.id)">
-                        <img :src="movie.images.small" alt="">
+                        <img :src="movie.images.medium" alt="">
                     </div>
                 </div>
             </div>
@@ -27,7 +27,7 @@
                     <div class="movie float-l" v-for="movie,index in comingMovData"
                      v-if="index<8"
                      v-on:click="showMovDetail(movie.id)">
-                        <img :src="movie.images.small" alt="">
+                        <img :src="movie.images.medium" alt="">
                     </div>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                     <div class="movie float-l" v-for="movie,index in comingMovData"
                      v-if="index<8"
                      v-on:click="showMovDetail(movie.id)">
-                        <img :src="movie.images.small" alt="">
+                        <img :src="movie.images.medium" alt="">
                     </div>
                 </div>
             </div>
@@ -124,7 +124,7 @@ export default {
           console.log(response)
         })
 
-return;
+// return;
         //  正在上映
         this.$http.jsonp('https://api.douban.com/v2/movie/in_theaters?apikey=0b2bdeda43b5688921839c8ecb20399b&start=0&count=8')
         .then(function(response){

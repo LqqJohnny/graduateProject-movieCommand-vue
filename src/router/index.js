@@ -10,6 +10,9 @@ import searchByTag from '@/components/searchByTag'
 import onShowMov from '@/components/onShowMov'
 import comingMov from '@/components/comingMov'
 import login from '@/components/login'
+import addLike from '@/components/addLike'
+import images from '@/components/common/images'
+
 Vue.use(Router)
 
 export default new Router({
@@ -57,6 +60,14 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: login
+    },{
+      path: '/addLike',
+      name: 'addLike',
+      component: addLike
+    },{
+        path: '/images',
+        name: 'images',
+        component: images
     }
   ]
 })

@@ -217,13 +217,13 @@ var ReferrerKiller = (function () {
 	var imageHtml = PUB.imageHtml = function (url, imgAttributesParam,iframeAttributes) {
 		var imgAttributes = imgAttributesParam || {},
 		/*-- Making sure this styles are applyed in the image but let the possibility to overwrite them --*/
-			defaultStyles = 'border:none; margin: 0; padding: 0';
+			defaultStyles = 'border:none; margin: 0; padding: 0;';
 		if ('style' in imgAttributes) {
 			imgAttributes.style = defaultStyles + imgAttributes.style;
 		} else {
 			imgAttributes.style = defaultStyles;
 		}
-		return htmlString('<img style="max-height:300px;" src="' + escapeDoubleQuotes(url) + '" ' + objectToHtmlAttributes(imgAttributes) + '/>',iframeAttributes);
+		return htmlString('<img  src="' + escapeDoubleQuotes(url) + '" ' + objectToHtmlAttributes(imgAttributes) + '/>',iframeAttributes);
 	};
 
 	/**

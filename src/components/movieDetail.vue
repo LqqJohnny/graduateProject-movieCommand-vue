@@ -50,14 +50,21 @@
 <!-- 热门剧照    -->
         <div class="hotPhotos" v-if="movieInfo.photos.length>0">
             <p class="movInfoTitle">热门剧照</p>
-            <div class="photosContainer">
+            <div class="photosContainer" >
                 <div class="photos" id="photos">
-                    <div class="photo" v-for="photo in movieInfo.photos">
+                    <div class="photo" v-for="photo in movieInfo.photos" @click="showSlider()">
                         <span class="image_kill_referrer" :data-img="photo.thumb.replace(/img[1-9]/,'img1')"></span>
-                        <!-- <img :src="photo.thumb.replace(/img[1-9]/,'img1')" alt=""> -->
+                        <div style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>
                     </div>
                 </div>
             </div>
+            <!-- 用于显示大图的html -->
+            <div>
+                <div style="display:none;" v-for="photo in movieInfo.photos" @click="showSlider()">
+                    <span class="Slider_image_kill" :data-img="photo.image.replace(/img[1-9]/,'img1')"></span>
+                </div>
+            </div>
+
         </div>
 <!-- 热门评论 -->
         <div class="hotShort" v-if="movieInfo.popular_reviews.length>0">
@@ -76,6 +83,12 @@
             </div>
         </div>
 
+    <images v-if="showImgSliderflag" :imageList="imageList"></images>
+    <div v-if="showImgSliderflag" class="closeBtn">
+        <mu-icon value="close" @click="closeSlider()" style="line-height:30px;" class=""/>
+    </div>
+
+
     <dataFrom></dataFrom>
     </div>
   </div>
@@ -85,16 +98,21 @@
 import backHeader from './common/backHeader.vue'
 import Loader from './common/loader.vue'
 import dataFrom from './common/dataFrom.vue'
+import images from './common/images.vue'
 export default {
     components:{
-        backHeader,Loader,dataFrom
+        backHeader,Loader,dataFrom,images
     },
     data:function(){
         return{
-            movieInfo:"",
             movieTitle:"",
-            wait:true
+            wait:true,
+            imageList:[],
+            showImgSliderflag:false
         }
+    },
+    computed:{
+
     },
     created:function(){
         this.wait=true;
@@ -103,6 +121,20 @@ export default {
         this.getMov();
     },
     methods:{
+        closeSlider(){
+            this.showImgSliderflag=false;
+        },
+        showSlider:function(){
+            var list=[];
+            var Slider_image_kill= document.getElementsByClassName('Slider_image_kill');
+
+            for(var i =0;i<Slider_image_kill.length;i++){
+                var iframeHtml=ReferrerKiller.imageHtml(Slider_image_kill[i].getAttribute('data-img'),{style:'width:300px;'});
+                list.push({content:iframeHtml+'<div style="width:100%;height:100%;position:absolute;z-index:1000;top:0;left:0;"></div>'})
+            }
+            this.imageList=list;
+            this.showImgSliderflag=true;
+        },
         showDirectorInfo:function(id){
             this.$router.push({path:'/director/'+id});
         },
@@ -114,8 +146,11 @@ export default {
             const id = 'https://api.douban.com/v2/movie/subject/' + this.$route.params.id + '?apikey=0b2bdeda43b5688921839c8ecb20399b&city=%E5%8C%97%E4%BA%AC&client=something&udid=dddddddddddddddddddddd'
             this.$http.jsonp(id)
             .then(function(response){
+                console.log(response.body);
                 _this.movieInfo=response.body;
                 _this.movieTitle=response.body.title;
+
+
                 // console.log(JSON.stringify(response.body));
                  _this.$nextTick(function(){
                      var killer_imgs= document.getElementsByClassName('image_kill_referrer');
@@ -134,7 +169,8 @@ export default {
 	activated:function(){
         this.wait=true;
         this.movieTitle="";
-		this.getMov();
+        this.showImgSliderflag=false;
+        this.getMov();
 	}
 
 }
@@ -264,5 +300,11 @@ body,html{
     height:90px;
     width:100px;
     overflow:hidden;
+    position: relative;
+}
+.closeBtn{
+    position:fixed;
+    bottom: 40px;
+    right:20px;
 }
 </style>

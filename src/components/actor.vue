@@ -21,9 +21,16 @@
                     <p class="movInfoTitle">影星图片</p>
                     <div class="photosContainer">
                         <div class="photos" id="photos">
-                            <div class="photo" v-for="photo in starphotos">
+                            <div class="photo" v-for="photo in starphotos"  @click="showSlider()">
                                 <span class="image_kill_referrer" :data-img="photo.thumb.replace(/img[1-9]/,'img1')"></span>
+                                <div style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>
                             </div>
+                        </div>
+                    </div>
+                    <!-- 用于显示大图的html -->
+                    <div>
+                        <div style="display:none;" v-for="photo in starphotos" @click="showSlider()">
+                            <span class="Slider_image_kill" :data-img="photo.image.replace(/img[1-9]/,'img1')"></span>
                         </div>
                     </div>
             </div>
@@ -52,6 +59,12 @@
             </div>
 
 
+            <images v-if="showImgSliderflag" :imageList="imageList"></images>
+            <div v-if="showImgSliderflag" class="closeBtn">
+                <mu-icon value="close" @click="closeSlider()" style="line-height:30px;" class=""/>
+            </div>
+
+
         <dataFrom></dataFrom>
         </div>
 
@@ -63,20 +76,36 @@
 import backHeader from './common/backHeader.vue'
 import Loader from './common/loader.vue'
 import dataFrom from './common/dataFrom.vue'
-
+import images from './common/images.vue'
 export default {
     components:{
-        backHeader,Loader,dataFrom
+        backHeader,Loader,dataFrom,images
     },
     data:function(){
         return{
             wait:true,
             starMsg:"",
             actTitle:"",
-            starphotos:[]
+            starphotos:[],
+            imageList:[],
+            showImgSliderflag:false
         }
     },
     methods:{
+        closeSlider(){
+            this.showImgSliderflag=false;
+        },
+        showSlider:function(){
+            var list=[];
+            var Slider_image_kill= document.getElementsByClassName('Slider_image_kill');
+
+            for(var i =0;i<Slider_image_kill.length;i++){
+                var iframeHtml=ReferrerKiller.imageHtml(Slider_image_kill[i].getAttribute('data-img'),{style:'width:300px;'});
+                list.push({content:iframeHtml+'<div style="width:100%;height:100%;position:absolute;z-index:1000;top:0;left:0;"></div>'})
+            }
+            this.imageList=list;
+            this.showImgSliderflag=true;
+        },
         imageKill:function(){
             var killer_imgs= document.getElementsByClassName('image_kill_referrer');
             for(var i =0; i<killer_imgs.length;i++){
@@ -219,5 +248,10 @@ export default {
     height:100px;
     width:100px;
     overflow:hidden;
+}
+.closeBtn{
+    position:fixed;
+    bottom: 40px;
+    right:20px;
 }
 </style>

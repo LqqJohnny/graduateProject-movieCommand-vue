@@ -1,5 +1,5 @@
 <template lang="html">
-    <mu-appbar title="Title">
+    <mu-appbar title="Title" style="padding-top:15px;">
         电影屋
     </mu-appbar>
 </template>
