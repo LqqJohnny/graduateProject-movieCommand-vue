@@ -2,7 +2,6 @@
 <div class="iSliderImgs">
     <div id="imagesContainer" >
     </div>
-
 </div>
 </template>
 
@@ -10,25 +9,22 @@
 export default {
     data(){
         return {
-
         }
     },
-    props:{
-          imageList: Array,
-    },
+    props:["imageList","index"],
     methods:{
 
     },
     mounted(){
-        console.log(this.imageList);
         var S = new iSlider(document.getElementById('imagesContainer'), this.imageList, {
             isOverspread: 1,
             animateTime: 800,
-            //  animateType: 'flow',
-              plugins: ['button']
+             animateType: 'flow',
+             initIndex:this.index,
         });
 
-    }
+    },
+
 }
 </script>
 
@@ -51,6 +47,7 @@ iframe{
     width:90%;
     margin:0 auto;
     height:90%;
+
 }
 .closeBtn{
     width:30px;
