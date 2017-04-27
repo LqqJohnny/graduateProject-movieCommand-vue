@@ -52,7 +52,7 @@
             <p class="movInfoTitle">热门剧照</p>
             <div class="photosContainer" >
                 <div class="photos" id="photos">
-                    <div class="photo" v-for="photo in movieInfo.photos" @click="showSlider()">
+                    <div class="photo" v-for="(photo,index) in movieInfo.photos" @click="showSlider(index)">
                         <span class="image_kill_referrer" :data-img="photo.thumb.replace(/img[1-9]/,'img1')"></span>
                         <div style="position:absolute;top:0;left:0;width:100%;height:100%;"></div>
                     </div>
@@ -60,7 +60,7 @@
             </div>
             <!-- 用于显示大图的html -->
             <div>
-                <div style="display:none;" v-for="photo in movieInfo.photos" @click="showSlider()">
+                <div style="display:none;" v-for="photo in movieInfo.photos">
                     <span class="Slider_image_kill" :data-img="photo.image.replace(/img[1-9]/,'img1')"></span>
                 </div>
             </div>
@@ -83,9 +83,9 @@
             </div>
         </div>
 
-    <images v-if="showImgSliderflag" :imageList="imageList"></images>
+    <images v-if="showImgSliderflag" :index='imageIndex' :imageList="imageList"></images>
     <div v-if="showImgSliderflag" class="closeBtn">
-        <mu-icon value="close" @click="closeSlider()" style="line-height:30px;" class=""/>
+        <mu-icon value="close" @click="closeSlider()" style="line-height:40px;" class=""/>
     </div>
 
 
@@ -105,6 +105,7 @@ export default {
     },
     data:function(){
         return{
+            imageIndex:0,
             movieTitle:"",
             wait:true,
             imageList:[],
@@ -124,15 +125,16 @@ export default {
         closeSlider(){
             this.showImgSliderflag=false;
         },
-        showSlider:function(){
+        showSlider:function(index){
             var list=[];
             var Slider_image_kill= document.getElementsByClassName('Slider_image_kill');
 
             for(var i =0;i<Slider_image_kill.length;i++){
-                var iframeHtml=ReferrerKiller.imageHtml(Slider_image_kill[i].getAttribute('data-img'),{style:'width:300px;'});
+                var iframeHtml=ReferrerKiller.imageHtml(Slider_image_kill[i].getAttribute('data-img'),{style:'width:300px;position:fixed;'});
                 list.push({content:iframeHtml+'<div style="width:100%;height:100%;position:absolute;z-index:1000;top:0;left:0;"></div>'})
             }
             this.imageList=list;
+            this.imageIndex=index;
             this.showImgSliderflag=true;
         },
         showDirectorInfo:function(id){
@@ -303,8 +305,12 @@ body,html{
     position: relative;
 }
 .closeBtn{
+    background-color: #2196f3;
+    width:40px;
+    height:40px;
     position:fixed;
     bottom: 40px;
-    right:20px;
+    right:50%;
+    margin-right: -20px;
 }
 </style>

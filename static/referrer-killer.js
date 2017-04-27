@@ -125,7 +125,7 @@ var ReferrerKiller = (function () {
 			<html>\
 			<head>\
 			<meta charset=\\\'utf-8\\\'>\
-			<style>*{margin:0;padding:0;border:0;}</style>\
+			<style>*{margin:0;padding:0;border:0;}.center{position:absolute;top:50%;left:50%;-webkit-transform: translateX(-50%) translateY(-50%);}</style>\
 			</head>' +
 			/*-- Function to adapt iframe's size to content's size --*/
 			'<script>\
@@ -149,11 +149,12 @@ var ReferrerKiller = (function () {
 						}\
 					}\
 					var ifr = parent.document.getElementById(\\\'' + id + '\\\');\
+					first.style.cssText=\\\'position: fixed;top: 50%;left: 50%;-webkit-transform: translateX(-50%) translateY(-50%);\\\' ;\
 					ifr.height = height;\
 					ifr.width  = width;\
 				}\
 			</script>' +
-			'<body onload=\\\'resizeWindow()\\\'>\' + decodeURIComponent(\'' +
+			'<body  onload=\\\'resizeWindow()\\\'>\' + decodeURIComponent(\'' +
 			/*-- Content --*/
 			encodeURIComponent(html) +
 		'\') +\'</body></html>\'"></iframe>';
