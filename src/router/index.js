@@ -12,7 +12,6 @@ import comingMov from '@/components/comingMov'
 import login from '@/components/login'
 import addLike from '@/components/addLike'
 import images from '@/components/common/images'
-import commentDetail from '@/components/commentDetail'
 Vue.use(Router)
 
 export default new Router({
@@ -68,10 +67,6 @@ export default new Router({
         path: '/images',
         name: 'images',
         component: images
-    },{
-        path: '/commentDetail/:id',
-        name: 'commentDetail',
-        component: commentDetail
     }
   ]
 })
