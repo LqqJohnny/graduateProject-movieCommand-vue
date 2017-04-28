@@ -2,7 +2,7 @@
   <div>
     <backHeader :title="movieTitle"></backHeader>
     <Loader style="margin-top:200px;" v-if="wait==true"></Loader>
-    <div class="content" v-show="wait==false">
+    <div class="content" v-if="wait==false">
         <div class="baseInfo clearfix">
             <div class="float-l image"><img :src="movieInfo.images.medium" alt=""></div>
             <div class="info float-l">
@@ -22,7 +22,8 @@
             <div class="directors clearfix">
                 <div class="director" v-for="director in movieInfo.directors"
                 @click="showDirectorInfo(director.id)">
-                    <img :src="director.avatars.small" alt="">
+                    <img v-if="director.avatars!=null" :src="director.avatars.small" alt="">
+                    <img v-if="director.avatars==null" src="./src/img/noimg.png" alt="">
                     <div class="img_title">{{director.name}}</div>
                 </div>
             </div>
@@ -31,7 +32,8 @@
             <div class="actors clearfix" v-if="movieInfo.casts.length>0">
                 <div class="actor" v-for="actor in movieInfo.casts"
                 @click="showActorInfo(actor.id)">
-                    <img :src="actor.avatars.small" alt="">
+                    <img v-if="actor.avatars!=null" :src="actor.avatars.small" alt="">
+                    <img v-if="actor.avatars==null" src="./src/img/noimg.png" alt="">
                     <div  class="img_title">{{actor.name}}</div>
                 </div>
             </div>
@@ -75,7 +77,7 @@
                         <img :src="comment.author.avatar" alt="">
                         <span>{{comment.author.name}}</span>
                     </div>
-                    <p style="font-size:15px;padding:0;margin:0;font-weight:bold;">{{comment.title}}</p>
+                    <p style="font-size:15px;padding:0;margin:0;font-weight:bold;" >{{comment.title}}</p>
                     <div class="commentSummary">
                         {{comment.summary}}
                     </div>
@@ -122,6 +124,10 @@ export default {
         this.getMov();
     },
     methods:{
+        seeComment(id){
+            var url="/commentDetail/"+id;
+            this.$router.push({path:url});
+        },
         closeSlider(){
             this.showImgSliderflag=false;
         },
