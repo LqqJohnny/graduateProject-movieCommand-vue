@@ -51,6 +51,7 @@ export default {
     bottom:0;
 }
 .mu-bottom-nav{
+    display:block;
     background-color: #2196f3;
 }
 </style>
