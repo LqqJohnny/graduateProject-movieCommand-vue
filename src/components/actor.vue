@@ -4,7 +4,7 @@
         <Loader style="margin-top:200px;" v-if="wait==true"></Loader>
         <div class="content" v-if="wait==false">
             <div class="baseInfo clearfix">
-                <div class="float-l image"><img :src="starMsg.avatars.medium" alt=""></div>
+                <div class="float-l image small-image"><img :src="starMsg.avatars.medium" alt=""></div>
                 <div class="info float-l">
                     <p> 姓名：{{starMsg.name}}
                     </p>
@@ -39,7 +39,7 @@
                 <p class="movInfoTitle">代表作品</p>
                 <div class="star-movie-wrap">
                   <div class="star-movie clearfix" @click="movieMsg(item.subject.id)" v-for="item in starMsg.works">
-                    <div class="float-l">
+                    <div class="float-l small-image">
                       <img  :src="item.subject.images.small">
                     </div>
                     <div class="float-l">
@@ -229,7 +229,7 @@ export default {
     background-color: #2196f3;
 }
 .actImages{
-    height: 140px;
+    height: 190px;
     padding: 0 8px ;
 }
 .photos{
@@ -238,14 +238,14 @@ export default {
     white-space: nowrap;
 }
 .photosContainer{
-    height:130px;
+    height:180px;
     width:95%;
     overflow: auto;
     position: absolute;
 }
 .photo{
     display: inline-block;
-    height:100px;
+    height:150px;
     width:100px;
     overflow:hidden;
 }
@@ -253,5 +253,15 @@ export default {
     position:fixed;
     bottom: 40px;
     right:20px;
+}
+.small-image{
+  width:120px;
+  height:150px;
+  overflow:hidden;
+  margin-right:20px;
+}
+.small-image img{
+  height: 100%;
+  width:100%;
 }
 </style>

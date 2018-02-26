@@ -55,13 +55,14 @@ body{
 .img_title{
     width:100%;
     padding:0 5px;
-    height: 20px;
-    line-height:20px;
+    height: 30px;
+    font-size:20px;
+    line-height:30px;
     color:#fff;
     background-color: #444;
     opacity: 0.7;
     position: absolute;
-    bottom: 6px;
+    bottom: 0px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space:nowrap;

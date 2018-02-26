@@ -4,7 +4,7 @@
     <Loader style="margin-top:200px;" v-if="wait==true"></Loader>
     <div class="content" v-if="wait==false">
         <div class="baseInfo clearfix">
-            <div class="float-l image"><img :src="movieInfo.images.medium" alt=""></div>
+            <div class="float-l image small-image"><img :src="movieInfo.images.small" alt=""></div>
             <div class="info float-l">
                 <p> 导演：
                     <span v-for="daoyan in movieInfo.directors">{{daoyan.name}}</span>
@@ -20,7 +20,7 @@
         <div class="people">
             <p class="movInfoTitle">导演</p>
             <div class="directors clearfix">
-                <div class="director" v-for="director in movieInfo.directors"
+                <div class="director small-image" v-for="director in movieInfo.directors"
                 @click="showDirectorInfo(director.id)">
                     <img v-if="director.avatars!=null" :src="director.avatars.small" alt="">
                     <img v-if="director.avatars==null" src="./src/img/noimg.png" alt="">
@@ -30,7 +30,7 @@
 
             <p v-if="movieInfo.casts.length>0" class="movInfoTitle">主演阵容</p>
             <div class="actors clearfix" v-if="movieInfo.casts.length>0">
-                <div class="actor" v-for="actor in movieInfo.casts"
+                <div class="actor small-image" v-for="actor in movieInfo.casts"
                 @click="showActorInfo(actor.id)">
                     <img v-if="actor.avatars!=null" :src="actor.avatars.small" alt="">
                     <img v-if="actor.avatars==null" src="./src/img/noimg.png" alt="">
@@ -290,7 +290,7 @@ body,html{
 .hotPhotos{
     padding:10px;
     position:relative;
-    height:160px;
+    height:220px;
 }
 .photos{
     padding:10px;
@@ -298,14 +298,14 @@ body,html{
     white-space: nowrap;
 }
 .photosContainer{
-    height:120px;
+    height:180px;
     width:95%;
     overflow: auto;
     position: absolute;
 }
 .photo{
     display: inline-block;
-    height:90px;
+    height:150px;
     width:100px;
     overflow:hidden;
     position: relative;
@@ -318,5 +318,14 @@ body,html{
     bottom: 40px;
     right:50%;
     margin-right: -20px;
+}
+.small-image{
+  width:180px;
+  height:240px;
+  overflow:hidden;
+}
+.small-image img{
+  height: 100%;
+  width:100%;
 }
 </style>
