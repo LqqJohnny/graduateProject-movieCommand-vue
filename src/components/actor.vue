@@ -249,6 +249,7 @@ export default {
     width:100px;
     overflow:hidden;
 }
+
 .closeBtn{
     position:fixed;
     bottom: 40px;
